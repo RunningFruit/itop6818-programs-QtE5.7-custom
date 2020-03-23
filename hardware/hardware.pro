@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT       += network
+QT       += network websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,7 +13,8 @@ TARGET = hardware
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
+SOURCES += main.cpp \
+        websocket/datareceive.cpp \
         ad/ad.cpp \
         buzzer/buzzer.cpp \
         can/can.cpp \
@@ -27,7 +28,8 @@ SOURCES += main.cpp\
         uart/uart.cpp \
         watchdog/watchdog.cpp
 
-HEADERS  += ad/ad.h \
+HEADERS  += websocket/datareceive.h \
+        ad/ad.h \
         buzzer/buzzer.h \
         can/can.h \
         led/led.h \
