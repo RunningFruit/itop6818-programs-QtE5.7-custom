@@ -1,15 +1,14 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-07-26T19:19:55
-#
-#-------------------------------------------------
+QT += core
+QT -= gui
 
-QT       += core gui
-QT       += network websockets
+QT += network websockets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+CONFIG += c++11
 
 TARGET = hardware
+CONFIG += console
+CONFIG -= app_bundle
+
 TEMPLATE = app
 
 

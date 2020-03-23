@@ -1,10 +1,6 @@
 #include "rs485.h"
 
-#include <qtextedit.h>
-#include <qprogressbar.h>
 #include <qtimer.h>
-#include <qapplication.h>
-#include <qmessagebox.h>
 #include <qstringlist.h>
 
 #include <stdio.h>

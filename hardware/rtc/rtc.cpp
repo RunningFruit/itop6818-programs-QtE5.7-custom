@@ -2,7 +2,6 @@
 
 #include <QDate>
 #include <QTime>
-#include <QPalette>
 #include <stdio.h>
 
 rtc::rtc()

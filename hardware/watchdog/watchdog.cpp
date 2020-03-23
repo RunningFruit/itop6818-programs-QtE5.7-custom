@@ -6,7 +6,7 @@
 #include <sys/ioctl.h>
 #include <linux/types.h>
 #include <linux/watchdog.h>
-#include <QMessageBox>
+
 
 watchdog::watchdog()
 {

@@ -1,11 +1,7 @@
 #include "uart.h"
 
 
-#include <qtextedit.h>
-#include <qprogressbar.h>
 #include <qtimer.h>
-#include <qapplication.h>
-#include <qmessagebox.h>
 #include <qstringlist.h>
 
 #include <stdio.h>

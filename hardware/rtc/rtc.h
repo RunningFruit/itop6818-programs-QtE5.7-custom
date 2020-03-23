@@ -1,13 +1,12 @@
 #ifndef RTC_H
 #define RTC_H
 
-#include <QMainWindow>
 #include <QBasicTimer>
 #include <QTimerEvent>
+#include <QObject>
 
 
-
-class rtc
+class rtc:public QObject
 {
 public:
     explicit rtc();
