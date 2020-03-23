@@ -27,7 +27,7 @@ void relay::relay_open()
 
     if(fb<0)
     {
-        perror("open device buzzer failed!");
+        perror("open device relay failed!");
         //        exit(1);
     }
 }
