@@ -15,6 +15,7 @@
 #include "rtc/rtc.h"
 #include "watchdog/watchdog.h"
 #include "rc522/rc522.h"
+#include "rs485/rs485.h"
 #include "uart/uart.h"
 #include "sys/sysinfo.h"
 #include "db/dbutil.h"
@@ -54,6 +55,7 @@ private:
     watchdog *m_watchdog;
     rc522 *m_rc522;
     uart *m_uart;
+    rs485 *m_rs485;
 
 
 private slots:

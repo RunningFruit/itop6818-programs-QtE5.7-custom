@@ -8,9 +8,9 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     if(-1==(hosid=gethostid()))
     {
         qDebug()<<"gethostid err\n";
-//        exit(0);
+        //        exit(0);
     }
-//    qDebug()<<"hosid is :"<<hosid<<"\n";
+    //    qDebug()<<"hosid is :"<<hosid<<"\n";
 
     m_connect_url = QString("%1%2%3")
             .arg(URL_WEBSOCKET)
@@ -30,6 +30,7 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     m_watchdog = new watchdog();
     m_rc522 = new rc522();
     m_uart = new uart();
+    m_rs485 = new rs485();
 
     dataRecvWS = Q_NULLPTR;
     connectStatus = false;
@@ -165,6 +166,13 @@ void DataReceive::deviceCmd(QString device,QString cmd){
             m_uart->uart_send_msg("hello,uart");
         }else if(cmd == "off"){
             m_uart->uart_close();
+        }
+    }  else if(device == "rs485"){
+        if(cmd == "on"){
+            m_rs485->openSerialPort();
+            m_rs485->sendMsg("hello,uart");
+        }else if(cmd == "off"){
+            m_rs485->close();
         }
     }
     qDebug()<<cmd;

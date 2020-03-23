@@ -18,18 +18,16 @@
 #include <cstdlib>
 
 rs485::rs485(){
-
-    m_fd = openSerialPort();
-    fd2 = ::open("/dev/max485_ctl_pin",0);
-    if(fd2 < 0)
-        printf("on_m_sendButton_clicked Open max485_ctl faild\n");
-    if (m_fd < 0) {
-        printf("Error,Fail to open serial port!");
-        return ;
-    }
-
 }
 rs485::~rs485()
+{
+    if (m_fd >= 0) {
+        ::close(m_fd);
+        m_fd = -1;
+    }
+}
+
+void rs485::close()
 {
     if (m_fd >= 0) {
         ::close(m_fd);
@@ -122,7 +120,7 @@ int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
     return 0;
 }
 
-int rs485::openSerialPort()
+void rs485::openSerialPort()
 {
     int fd=-1;
 
@@ -135,7 +133,17 @@ int rs485::openSerialPort()
         printf("open ttySAC1 success\n");
         set_opt(fd, 9600, 8, 'N', 1);
     }
-    return fd;
+
+
+    m_fd = fd;
+
+    fd2 = ::open("/dev/max485_ctl_pin",0);
+    if(fd2 < 0)
+        printf("on_m_sendButton_clicked Open max485_ctl faild\n");
+    if (m_fd < 0) {
+        printf("Error,Fail to open serial port!");
+        return ;
+    }
 }
 void rs485::sendMsg( QString text)
 {
