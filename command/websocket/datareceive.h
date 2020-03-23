@@ -56,6 +56,7 @@ private:
     rc522 *m_rc522;
     uart *m_uart;
     rs485 *m_rs485;
+    MyTimer *m_3timer;
 
 
 private slots:

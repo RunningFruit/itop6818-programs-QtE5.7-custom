@@ -31,6 +31,7 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     m_rc522 = new rc522();
     m_uart = new uart();
     m_rs485 = new rs485();
+    m_3timer = new MyTimer();
 
     dataRecvWS = Q_NULLPTR;
     connectStatus = false;
@@ -173,6 +174,12 @@ void DataReceive::deviceCmd(QString device,QString cmd){
             m_rs485->sendMsg("hello,uart");
         }else if(cmd == "off"){
             m_rs485->close();
+        }
+    }else if(device == "timer"){
+        if(cmd == "on"){
+            m_3timer->timerStart();
+        }else{
+            m_3timer->timerClose();
         }
     }
     qDebug()<<cmd;

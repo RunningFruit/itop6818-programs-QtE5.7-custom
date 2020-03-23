@@ -13,9 +13,15 @@ public:
 protected:
     virtual void timerEvent(QTimerEvent *event);
 
+public:
+    void timerStart();
+
+public slots:
+    void timerClose();
+
 private slots:
     void timerUpdate();
-    void timerClose();
+
 private:
     int id1,id2,id3;
 

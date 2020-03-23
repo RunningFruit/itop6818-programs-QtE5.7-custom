@@ -8,6 +8,20 @@
 MyTimer::MyTimer()
 {
 
+
+}
+
+MyTimer::~MyTimer()
+{
+    killTimer(id1);
+    killTimer(id2);
+    killTimer(id3);
+}
+
+
+// 定时器溢出处理
+void MyTimer::timerStart()
+{
     // 开启一个1秒定时器，返回其ID
     id1 = startTimer(1000);
     id2 = startTimer(2000);
@@ -26,10 +40,6 @@ MyTimer::MyTimer()
     QTimer::singleShot(10000,this,SLOT(timerClose()));
 }
 
-MyTimer::~MyTimer()
-{
-}
-
 
 void MyTimer::timerEvent(QTimerEvent *event)
 {
@@ -44,7 +54,6 @@ void MyTimer::timerEvent(QTimerEvent *event)
         qDebug() << "timer3";
     }
 }
-
 
 
 // 定时器溢出处理
