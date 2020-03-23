@@ -1,39 +1,37 @@
 #ifndef NETWORKTCP_H
 #define NETWORKTCP_H
 
-#include <QMainWindow>
+
 #include <QtNetwork/QTcpServer>
 #include <QtNetwork/QTcpSocket>
 #include <map>
 #include <iostream>
-#include <QMessageBox>
+
 using namespace std;
 
-namespace Ui {
-    class NetworkTcp;
-}
 
-class NetworkTcp : public QMainWindow
+class tcp:public QObject
 {
-    Q_OBJECT
 
 public:
-    explicit NetworkTcp(QWidget *parent = 0);
-    ~NetworkTcp();
+    explicit tcp();
+    ~tcp();
 
     QTcpServer *m_pTcpServer;
     QTcpSocket *m_pTcpSocket;
     map<int,QTcpSocket*> map_TcpSocket;
 
-       QTcpSocket *pTcpSocketServer;
-       QTcpSocket *pTcpSocketClient;
+    QTcpSocket *pTcpSocketServer;
+    QTcpSocket *pTcpSocketClient;
 
     bool isServer;
 
-private:
-    Ui::NetworkTcp *ui;
+    QString IP;
+    QString NetPort;
+    QString StrSendInfo;
+    QString sendmsg;
 
-private slots:
+private :
     void slotStartServer();
     void slotConnectServer();
     void slotSendMesg();

@@ -1,25 +1,22 @@
 #ifndef TIMER_EVENT_H
 #define TIMER_EVENT_H
 
-#include <QWidget>
+#include <QTimerEvent>
+#include <QObject>
 
-namespace Ui {
-    class Widget;
-}
-
-class timerevent : public QWidget
+class timerevent: public QObject
 {
-    Q_OBJECT
 
 public:
-    explicit timerevent(QWidget *parent = 0);
+    explicit timerevent();
     ~timerevent();
 protected:
     void timerEvent(QTimerEvent *event);
-private slots:
+public:
+    int startTimer(int time);
+private:
     void timerUpdate();
 private:
-    Ui::Widget *ui;
     int id1,id2,id3;
 
 };

@@ -1,5 +1,6 @@
-#include "relaytest.h"
-#include "ui_relaytest.h"
+#include "relay.h"
+
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -11,12 +12,8 @@
 static int fb;
 volatile int RELAY=0;
 
-relaytest::relaytest(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::relaytest)
+relay::relay()
 {
-    ui->setupUi(this);
-
 
     fb=open("/dev/relay_ctl",0);
 
@@ -24,20 +21,15 @@ relaytest::relaytest(QWidget *parent) :
     {
         perror("open device buzzer failed!");
         exit(1);
-
     }
-    connect(ui->RELAY_Button,SIGNAL(toggled(bool)),this,SLOT(on_RELAY_Button_clicked()));
 
 }
 
-relaytest::~relaytest()
+relay::~relay()
 {
-    delete ui;
 }
 
-
-
-void relaytest::on_RELAY_Button_clicked()
+void relay::on_RELAY_Button_clicked()
 {
     RELAY=~RELAY;
     if(RELAY)

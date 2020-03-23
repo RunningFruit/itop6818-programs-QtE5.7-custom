@@ -1,15 +1,16 @@
 #ifndef RC522_H
 #define RC522_H
 
-#include <QDialog>
-#include <qsocketnotifier.h>
-namespace Ui {
-class rc522;
-}
 
-class rc522 : public QDialog
+#include <qsocketnotifier.h>
+
+class rc522
 {
-    Q_OBJECT
+
+public:
+    explicit rc522();
+    ~rc522();
+
 private:
 
     int WriteRawRC(int addr, int data);
@@ -21,25 +22,19 @@ private:
     //static void print_usage(const char *prog);
     void parse_opts();
     char PcdComMF522(unsigned char Command, unsigned char *pInData,
-                                                    unsigned char InLenByte, unsigned char *pOutData,
-                                                    unsigned int  *pOutLenBit);
+                     unsigned char InLenByte, unsigned char *pOutData,
+                     unsigned int  *pOutLenBit);
 
     char PcdRequest(unsigned char req_code, unsigned char *pTagType);
     char PcdAnticoll(unsigned char *pSnr);
     void HandleConfigMenu(unsigned char inputvalue);
 private:
-        int m_fd;
-        QSocketNotifier *m_notifier;
-
-public:
-    explicit rc522(QWidget *parent = 0);
-    ~rc522();
+    int m_fd;
+    QSocketNotifier *m_notifier;
 
 private slots:
-        void on_id_Edit_read();
+    void on_id_Edit_read();
 
-private:
-    Ui::rc522 *ui;
 };
 
 #endif // RC522_H

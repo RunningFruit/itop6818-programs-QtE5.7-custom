@@ -1,28 +1,17 @@
-#ifndef ADTEST_H
-#define ADTEST_H
+#ifndef AD_H
+#define AD_H
 
-#include <QWidget>
+#include <QObject>
 
-#include<qlcdnumber.h>
-
-namespace Ui {
-class adtest;
-}
-
-class adtest : public QWidget
+class ad: public QObject
 {
-    Q_OBJECT
-
 public:
-    explicit adtest(QWidget *parent = 0);
-    ~adtest();
+    explicit ad();
+    ~ad();
 
 protected:
-    void timerEvent(QTimerEvent *);
+    void open();
 
-private:
-    Ui::adtest *ui;
-    QLCDNumber* m_label;
 };
 
-#endif // ADTEST_H
+#endif // AD_H

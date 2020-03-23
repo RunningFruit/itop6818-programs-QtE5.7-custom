@@ -1,30 +1,16 @@
-#ifndef LEDTEST_H
-#define LEDTEST_H
+#ifndef LED_H
+#define LED_H
 
-#include <QMainWindow>
 
-namespace Ui {
-class ledtest;
-}
-
-class ledtest : public QMainWindow
+class led
 {
-    Q_OBJECT
 
 public:
-    explicit ledtest(QWidget *parent = 0);
-    ~ledtest();
+    explicit led();
+    ~led();
 
-//add by myself
-protected:
-    void changeEvent(QEvent *e);
-
-public slots:
+public:
     void LED_Toggle();
-
-
-private:
-    Ui::ledtest *ui;
 };
 
-#endif // LEDTEST_H
+#endif // LED_H

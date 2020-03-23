@@ -1,5 +1,6 @@
 #include "watchdog.h"
-#include "ui_watchdog.h"
+
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -7,12 +8,8 @@
 #include <linux/watchdog.h>
 #include <QMessageBox>
 
-watchdog::watchdog(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::watchdog)
+watchdog::watchdog()
 {
-    ui->setupUi(this);
-
     fd = 0;
     times = 0;
     s='V';
@@ -20,7 +17,6 @@ watchdog::watchdog(QWidget *parent) :
 
 watchdog::~watchdog()
 {
-    delete ui;
     ::close(fd);
 }
 
@@ -31,64 +27,38 @@ void watchdog::timerEvent(QTimerEvent *)
 
     times++;
 
-    if(ui->checkBox->isChecked())
+
+    if(IS_KEEPALIVE)
         ::ioctl(fd,WDIOC_KEEPALIVE,&dummy);
 
-    ui->times->setText(str.sprintf("%d",times));
+    str.sprintf("%d",times);
 }
 
 void watchdog::on_pushButton_clicked()
 {
-    if(ui->pushButton->text() == QString("open watchdog"))
+    if(is_open_watchdog)
     {
-        ui->pushButton->setText("close watchdog");
-        ui->checkBox->setDisabled(true);
-
-        if(ui->checkBox->isChecked())
-        {
-            ui->label_2->setText("Keep feeding the watchdog, system will not restart.");
-        }
-        else
-        {
-            ui->label_2->setText("System will restart in 1 minute without feed dog.");
-        }
+        is_open_watchdog=false;
+        IS_KEEPALIVE = true;
 
         fd = ::open("/dev/watchdog",O_WRONLY);
         if(fd < 0)
         {
-            QMessageBox::about(this,"error","open watchdog failure");
+            printf("error , open watchdog failure");
             exit(-1);
         }
-
 
         write(fd,(char *)&s,sizeof(s));
 
         times = 0;
-        ui->times->setText("0");
         timer.start(1000,this);
     }
     else
     {
-        ui->pushButton->setText("open watchdog");
-        ui->checkBox->setEnabled(true);
+        is_open_watchdog = true;
+
+        IS_KEEPALIVE = true;
         timer.stop();
         ::close(fd);
     }
 }
-
-void watchdog::moveEvent(QMoveEvent *)
-{
-    this->move(QPoint(0,0));
-}
-
-void watchdog::resizeEvent(QResizeEvent *)
-{
-    this->showMaximized();
-}
-
-void watchdog::closeEvent(QCloseEvent *)
-{
-   destroy();
-    exit(0);
-}
-

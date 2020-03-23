@@ -1,7 +1,6 @@
-#include "buzzertest.h"
-#include "ui_buzzertest.h"
 
-//add by myself
+#include "buzzer.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -9,48 +8,25 @@
 #include <sys/ioctl.h>
 #include <stdio.h>
 
-//#include <QDirectPainter>
+#include <unistd.h>
+#include <cstdlib>
 
 static int fb;
 volatile int BUZZER=0;
 
-buzzertest::buzzertest(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::buzzertest)
-{
-    ui->setupUi(this);
-
-    connect(ui->checkBox_Buzzer,SIGNAL(toggled(bool)),this,SLOT(BUZZER_Toggle()));
-
+buzzer::buzzer() {
     fb=open("/dev/buzzer_ctl",0);
     if(fb<0)
     {
         perror("open device buzzer failed!");
         exit(1);
-
     }
+}
+buzzer::~buzzer(){
 
 }
 
-buzzertest::~buzzertest()
-{
-    delete ui;
-}
-void buzzertest::changeEvent(QEvent *e)
-{
-    QMainWindow::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-
-        break;
-    default:
-        break;
-    }
-
-}
-
-void buzzertest::BUZZER_Toggle()
+void buzzer::BUZZER_Toggle()
 {
     BUZZER=~BUZZER;
     if(BUZZER==0)

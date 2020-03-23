@@ -1,11 +1,9 @@
-#include "adtest.h"
-#include "ui_adtest.h"
 
+#include "ad.h"
 
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -17,16 +15,13 @@
 #include <errno.h>
 #include <string.h>
 
-adtest::adtest(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::adtest)
-{
-    ui->setupUi(this);
-
-    startTimer(500);
+ad::ad(){
 }
 
-void adtest::timerEvent(QTimerEvent *)
+ad::~ad(){
+}
+
+void ad::open()
 {
 
     FILE *fd = fopen("/sys/bus/iio/devices/iio\:device0/in_voltage0_raw","rt");
@@ -42,12 +37,7 @@ void adtest::timerEvent(QTimerEvent *)
         buffer[len] = '\0';
         int value = -1;
         sscanf(buffer,"%d",&value);
-        m_label->display(value);
+        printf("\n%d\n",value);
     }
     fclose(fd);
-}
-
-adtest::~adtest()
-{
-    delete ui;
 }

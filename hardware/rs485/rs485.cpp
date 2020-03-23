@@ -1,5 +1,4 @@
 #include "rs485.h"
-#include "ui_rs485.h"
 
 #include <qtextedit.h>
 #include <qprogressbar.h>
@@ -19,37 +18,27 @@
 #include <errno.h>
 #include <string.h>
 #include <termio.h>
+#include <unistd.h>
+#include <cstdlib>
 
-rs485::rs485(QWidget *parent) :
-        QDialog(parent),
-        ui(new Ui::rs485)
-{
-        ui->setupUi(this);
-        m_fd = openSerialPort();
-        fd2 = ::open("/dev/max485_ctl_pin",0);
-        if(fd2 < 0)
-                printf("on_m_sendButton_clicked Open max485_ctl faild\n");
-        if (m_fd < 0) {
-            QMessageBox::warning(this, tr("Error"), tr("Fail to open serial port!"));
-            return ;
-        }
+rs485::rs485(){
 
-        m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
-        connect (m_notifier, SIGNAL(activated(int)), this, SLOT(remoteDataIncoming()));
+    m_fd = openSerialPort();
+    fd2 = ::open("/dev/max485_ctl_pin",0);
+    if(fd2 < 0)
+        printf("on_m_sendButton_clicked Open max485_ctl faild\n");
+    if (m_fd < 0) {
+        printf("Error,Fail to open serial port!");
+        return ;
+    }
 
 }
 rs485::~rs485()
 {
-        delete ui;
-        if (m_notifier) {
-            delete m_notifier;
-            m_notifier = 0;
-        }
-
-        if (m_fd >= 0) {
-            ::close(m_fd);
-            m_fd = -1;
-        }
+    if (m_fd >= 0) {
+        ::close(m_fd);
+        m_fd = -1;
+    }
 }
 
 int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
@@ -124,7 +113,7 @@ int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
     if( nStop == 1 )
         newtio.c_cflag &=  ~CSTOPB;
     else if ( nStop == 2 )
-    newtio.c_cflag |=  CSTOPB;
+        newtio.c_cflag |=  CSTOPB;
     newtio.c_cc[VTIME]  = 0;
     newtio.c_cc[VMIN] = 0;
     tcflush(fd,TCIFLUSH);
@@ -144,41 +133,41 @@ int rs485::openSerialPort()
     const char *tty = "/dev/ttySAC11";
     fd = ::open(tty, O_RDWR|O_NONBLOCK);
     if(fd <0 )
-          printf("open ttySAC1 failed\n");
+        printf("open ttySAC1 failed\n");
     else
-       {
-          printf("open ttySAC1 success\n");
-          set_opt(fd, 9600, 8, 'N', 1);
-       }
+    {
+        printf("open ttySAC1 success\n");
+        set_opt(fd, 9600, 8, 'N', 1);
+    }
     return fd;
 }
-void rs485::on_m_sendButton_clicked()
+void rs485::sendMsg( QString text)
 {
-        int ret;
+    int ret;
 
-        ret = ioctl(fd2, 1, 0);
-        QString text( ui->m_send->toPlainText());
-        if (text.isEmpty()) {
-                return ;
-         }
-        write(m_fd, (text.data()),2*text.length());
-        usleep(2*(16*text.length()+2)*100);//100=1000000/B9600
-        ret = ioctl(fd2, 0, 0);
+    ret = ioctl(fd2, 1, 0);
+
+    if (text.isEmpty()) {
+        return ;
+    }
+    write(m_fd, (text.data()),2*text.length());
+    usleep(2*(16*text.length()+2)*100);//100=1000000/B9600
+    ret = ioctl(fd2, 0, 0);
 }
 
 void rs485::remoteDataIncoming()
 {
-        int ret=-1;
-        char c;
+    int ret=-1;
+    char c;
 
-        if(fd2 < 0)
-                printf("remoteDataIncoming Open max485_ctl faild\n");
-        ret = ioctl(fd2, 0, 0);
-        printf("ret is %d\n",ret);
-        if (read(m_fd, &c, sizeof c) != 1) {
-            QMessageBox::warning(this, tr("Error"), tr("Receive error!"));
-            return;
-            }
-        if(c!=NULL)
-            ui->m_receive->setText(ui->m_receive->toPlainText()+c);
+    if(fd2 < 0)
+        printf("remoteDataIncoming Open max485_ctl faild\n");
+    ret = ioctl(fd2, 0, 0);
+    printf("ret is %d\n",ret);
+    if (read(m_fd, &c, sizeof c) != 1) {
+        printf("Error,Receive error!");
+        return;
+    }
+    if(c!=NULL)
+        printf("%s\n",c);
 }

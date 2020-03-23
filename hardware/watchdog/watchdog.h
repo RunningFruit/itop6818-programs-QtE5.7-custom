@@ -1,34 +1,29 @@
 #ifndef WATCHDOG_H
-#define MAINWINDOW_H
+#define WATCHDOG_H
 
-#include <QMainWindow>
 #include <QBasicTimer>
+#include <QTimerEvent>
+#include <QObject>
 
-namespace Ui {
-class watchdog;
-}
-
-class watchdog : public QMainWindow
+class watchdog:public QObject
 {
-    Q_OBJECT
     
 public:
-    explicit watchdog(QWidget *parent = 0);
+    explicit watchdog();
     ~watchdog();
     
 protected:
     void timerEvent(QTimerEvent *);
-    void moveEvent(QMoveEvent *);
-    void resizeEvent(QResizeEvent *);
-    void closeEvent(QCloseEvent *);
-private slots:
+
+private:
     void on_pushButton_clicked();
 
 private:
-    Ui::watchdog *ui;
+    bool IS_KEEPALIVE=false;
+    bool is_open_watchdog;
+    int times;
     QBasicTimer timer;
     int fd;
-    int times;
     char s;
 };
 

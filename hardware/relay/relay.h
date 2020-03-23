@@ -1,29 +1,17 @@
-#ifndef RELAYTEST_H
-#define RELAYTEST_H
+#ifndef RELAY_H
+#define RELAY_H
 
-#include <QMainWindow>
 
-namespace Ui {
-class relaytest;
-}
-
-class relaytest : public QMainWindow
-{
-    Q_OBJECT
+class relay {
 
 public:
-    explicit relaytest(QWidget *parent = 0);
-    ~relaytest();
-
-private slots:
-
-    void on_RELAY_Button_clicked();
+    explicit relay();
+    ~relay();
 
 private:
-    Ui::relaytest *ui;
-
+    void on_RELAY_Button_clicked();
 };
 
-#endif // RELAYTEST_H
+#endif // RELAY_H
 
 

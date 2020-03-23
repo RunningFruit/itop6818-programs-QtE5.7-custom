@@ -1,37 +1,33 @@
-#ifndef UARTTEST_H
-#define UARTTEST_H
+#ifndef UART_H
+#define UART_H
 
-#include <QDialog>
+
 #include <qsocketnotifier.h>
 
-namespace Ui {
-class uarttest;
-}
 
-class uarttest : public QDialog
+
+class uart : public QObject
 {
-    Q_OBJECT
 
 public:
-    explicit uarttest(QWidget *parent = 0);
-    ~uarttest();
+    explicit uart();
+    ~uart();
 
 private:
-        int openSerialPort();
-        QString unicodeToString(QString str);
-
-        QString stringToUnicode(QString str);
-
-private slots:
-        void on_m_sendButton_clicked();
-        void remoteDataIncoming();
+    int openSerialPort();
+    QString unicodeToString(QString str);
+    QString stringToUnicode(QString str);
 
 private:
-        int m_fd;
-        QSocketNotifier *m_notifier;
+    void on_m_sendButton_clicked();
+    void remoteDataIncoming();
 
 private:
-    Ui::uarttest *ui;
+    QString m_receive;
+    QString m_send;
+    int m_fd;
+    QSocketNotifier *m_notifier;
+
 };
 
-#endif // UARTTEST_H
+#endif // UART_H

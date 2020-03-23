@@ -1,13 +1,12 @@
 #include "timerevent.h"
-#include "ui_timerEvent.h"
+
+
 #include <QDebug>
 #include <QTimer>
 #include <QTime>
-timerevent::timerevent(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::QWidget)
+
+timerevent::timerevent()
 {
-    ui->setupUi(this);
 
     // 开启一个1秒定时器，返回其ID
     id1 = startTimer(1000);
@@ -29,10 +28,12 @@ timerevent::timerevent(QWidget *parent) :
 
 timerevent::~timerevent()
 {
-    delete ui;
+}
+int timerevent::startTimer(int time){
+
 }
 
-void timerevent::timerevent(QTimerEvent *event)
+void timerevent::timerEvent(QTimerEvent *event)
 {
     // 判断是哪个定时器
     if(event->timerId() == id1){
@@ -57,11 +58,8 @@ void timerevent::timerUpdate()
     // 注意单引号间要输入一个空格
     // 每隔一秒就将“：”显示为空格
     if((time.second()%2) == 0) text[2]=' ';
-    ui->lcdNumber->display(text);
+    printf("%s\n",text.toStdString().data());
 
-    // 产生300以内的正整数
-    int rand = qrand()%300;
-    ui->lcdNumber->move(rand,rand);
 }
 
 
