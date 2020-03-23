@@ -1,11 +1,25 @@
 ﻿#include "datareceive.h"
 #include <QDebug>
 
+
+#include "common/common.h"
 #include <unistd.h>
 
 
 DataReceive::DataReceive(QObject *parent):QObject(parent)
 {
+    long hosid;
+    if(-1==(hosid=gethostid()))
+    {
+        //printf("gethostid err\n");
+        qDebug()<<"gethostid err\n";
+//        exit(0);
+    }
+    //printf("hosid is :%d\n",hosid);
+
+    connect_url = URL_WEBSOCKET+QString("/itop6818-"+hosid);
+    printf("connect_url is :%s\n",connect_url.toStdString().data());
+
     dataRecvWS = Q_NULLPTR;
     connectStatus = false;
     m_timer = new QTimer();
@@ -19,13 +33,7 @@ DataReceive::~DataReceive(){
  * @breaf 创建WebSocket连接
  */
 void DataReceive::createDataRecvWS(){
-    //    long result;
-    //    if(-1==(result=gethostid()))
-    //    {
-    //        printf("gethostid err\n");
-    //        exit(0);
-    //    }
-    //    printf("hosid is :%d\n",result);
+
 
     if(dataRecvWS == Q_NULLPTR){
         dataRecvWS = new QWebSocket();
@@ -34,7 +42,8 @@ void DataReceive::createDataRecvWS(){
         connect(dataRecvWS, &QWebSocket::textMessageReceived, this, &DataReceive::onTextReceived, Qt::AutoConnection);
         connect(dataRecvWS, &QWebSocket::connected, this, &DataReceive::onConnected, Qt::AutoConnection);
         connect(m_timer, &QTimer::timeout, this, &DataReceive::reconnect, Qt::AutoConnection);
-        dataRecvWS->open(QUrl("ws://localhost:8086/websocket/user1"));
+
+        dataRecvWS->open(QUrl(connect_url));
     }
 }
 
@@ -74,15 +83,11 @@ void DataReceive::onDisConnected(){
  * @note  连接建立成功时，调用该函数
  */
 void DataReceive::reconnect(){
-    //    long result;
-    //    if(-1==(result=gethostid()))
-    //    {
-    //        printf("gethostid err\n");
-    //        exit(0);
-    //    }
-    //    printf("hosid is :%d\n",result);
+
+    qDebug()<<connect_url;
 
     qDebug()<<"try to reconnect!";
-    dataRecvWS->abort();
-    dataRecvWS->open(QUrl("ws://localhost:8086/websocket/user1"));
+//    dataRecvWS->abort();
+    dataRecvWS->open(QUrl(connect_url));
+
 }

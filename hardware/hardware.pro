@@ -2,6 +2,7 @@ QT += core
 QT -= gui
 
 QT += network websockets
+QT += sql
 
 CONFIG += c++11
 
@@ -25,7 +26,19 @@ SOURCES += main.cpp \
         tcp/tcp.cpp \
         timerevent/timerevent.cpp \
         uart/uart.cpp \
-        watchdog/watchdog.cpp
+        watchdog/watchdog.cpp \
+        sys/sysinfo.cpp \
+        db/dbutil.cpp \
+        utils/JsonUtil.cpp \
+    utils/HttpUtil.cpp \
+    utils/HttpGetUtil.cpp \
+    utils/HttpPostUtil.cpp
+
+
+HEADERS  += common/common.h \
+    utils/HttpUtil.h \
+    utils/HttpGetUtil.h \
+    utils/HttpPostUtil.h
 
 HEADERS  += websocket/datareceive.h \
         ad/ad.h \
@@ -39,5 +52,7 @@ HEADERS  += websocket/datareceive.h \
         tcp/tcp.h \
         timerevent/timerevent.h \
         uart/uart.h \
-        watchdog/watchdog.h
+        watchdog/watchdog.h \
+        db/dbutil.h \
+        utils/JsonUtil.h
 

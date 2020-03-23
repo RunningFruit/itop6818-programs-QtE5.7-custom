@@ -17,6 +17,7 @@ public slots:
     void createDataRecvWS();    /*-<创建websocket连接 */
 
 private:
+    QString connect_url;
     QWebSocket *dataRecvWS;     /*-<websocket类 */
     bool connectStatus;         /*-<websocket连接状态，连接成功：true；断开：false */
     void reconnect();           /*-<周期重连函数 */

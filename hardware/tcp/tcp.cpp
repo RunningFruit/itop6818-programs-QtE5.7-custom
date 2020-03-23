@@ -13,7 +13,6 @@ void tcp::slotStartServer()  //启动服务器
 {
     isServer = true;
 
-
     m_pTcpServer = new QTcpServer();
     m_pTcpServer->listen(QHostAddress::Any,19999);
 }
