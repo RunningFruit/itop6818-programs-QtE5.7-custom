@@ -17,7 +17,7 @@ SOURCES += main.cpp \
         websocket/datareceive.cpp \
         ad/ad.cpp \
         buzzer/buzzer.cpp \
-        can/can.cpp \
+#        can/can.cpp \
         led/led.cpp \
         rc522/rc522.cpp \
         relay/relay.cpp \
@@ -31,7 +31,7 @@ SOURCES += main.cpp \
 HEADERS  += websocket/datareceive.h \
         ad/ad.h \
         buzzer/buzzer.h \
-        can/can.h \
+#        can/can.h \
         led/led.h \
         rc522/rc522.h \
         relay/relay.h \
