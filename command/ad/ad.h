@@ -1,5 +1,5 @@
-#ifndef AD_H
-#define AD_H
+#ifndef MY_AD_H
+#define MY_AD_H
 
 #include <QObject>
 
@@ -14,4 +14,4 @@ protected:
 
 };
 
-#endif // AD_H
+#endif // MY_AD_H

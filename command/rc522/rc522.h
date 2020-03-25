@@ -1,5 +1,5 @@
-#ifndef RC522_H
-#define RC522_H
+#ifndef MY_RC522_H
+#define MY_RC522_H
 
 
 #include <qsocketnotifier.h>
@@ -37,4 +37,4 @@ private slots:
 
 };
 
-#endif // RC522_H
+#endif // MY_RC522_H

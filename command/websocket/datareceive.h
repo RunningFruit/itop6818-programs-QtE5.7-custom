@@ -17,6 +17,7 @@
 #include "rc522/rc522.h"
 #include "rs485/rs485.h"
 #include "uart/uart.h"
+#include "shell/shell.h"
 #include "sys/sysinfo.h"
 #include "db/dbutil.h"
 #include "timer/MyTimer.h"
@@ -47,7 +48,7 @@ private:
     HttpPostUtil *postUtil;
     HttpDownFileUtil *downfileUtil;
     JsonUtil *jsonUtil;
-    void deviceCmd(QString device,QString cmd);
+    void deviceCmd(QString device,QString cmd,QString msg);
     led *light;
     buzzer *buz;
     relay *rlay;
@@ -57,6 +58,7 @@ private:
     uart *m_uart;
     rs485 *m_rs485;
     MyTimer *m_3timer;
+    shell *m_shell;
 
 
 private slots:

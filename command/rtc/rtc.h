@@ -1,5 +1,5 @@
-#ifndef RTC_H
-#define RTC_H
+#ifndef MY_RTC_H
+#define MY_RTC_H
 
 #include <QBasicTimer>
 #include <QTimerEvent>
@@ -16,4 +16,4 @@ public:
 
 };
 
-#endif // RTC_H
+#endif // MY_RTC_H

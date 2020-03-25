@@ -1,5 +1,5 @@
-#ifndef SHELL_H
-#define SHELL_H
+#ifndef MY_SHELL_H
+#define MY_SHELL_H
 
 #include <QObject>
 
@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // SHELL_H
+#endif // MY_SHELL_H

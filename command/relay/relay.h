@@ -1,5 +1,5 @@
-#ifndef RELAY_H
-#define RELAY_H
+#ifndef MY_RELAY_H
+#define MY_RELAY_H
 
 
 class relay {
@@ -14,6 +14,6 @@ public:
     void relay_close();
 };
 
-#endif // RELAY_H
+#endif // MY_RELAY_H
 
 

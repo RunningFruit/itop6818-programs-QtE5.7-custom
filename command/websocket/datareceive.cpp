@@ -97,7 +97,11 @@ void DataReceive::onTextReceived(QString msg){
         QString device = obj["device"].toString();
         QString cmd = obj["cmd"].toString();
 
-        deviceCmd(device,cmd);
+        QString msg="";
+        if(obj.contains("msg")){
+            msg = obj["msg"].toString();
+        }
+        deviceCmd(device,cmd,msg);
     }else{
         qDebug()<<"error";
     }
@@ -105,7 +109,7 @@ void DataReceive::onTextReceived(QString msg){
 
 
 //
-void DataReceive::deviceCmd(QString device,QString cmd){
+void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
     if(device == "led"){
 
         if(cmd == "on"){
@@ -164,14 +168,14 @@ void DataReceive::deviceCmd(QString device,QString cmd){
     else if(device == "uart"){
         if(cmd == "on"){
             m_uart->uart_open();
-            m_uart->uart_send_msg("hello,uart");
+            m_uart->uart_send_msg(msg);
         }else if(cmd == "off"){
             m_uart->uart_close();
         }
     }  else if(device == "rs485"){
         if(cmd == "on"){
             m_rs485->openSerialPort();
-            m_rs485->sendMsg("hello,uart");
+            m_rs485->sendMsg(msg);
         }else if(cmd == "off"){
             m_rs485->close();
         }
@@ -180,6 +184,10 @@ void DataReceive::deviceCmd(QString device,QString cmd){
             m_3timer->timerStart();
         }else{
             m_3timer->timerClose();
+        }
+    }else if(device == "shell"){
+        if(cmd == "on"){
+            m_shell->cmd(msg);
         }
     }
     qDebug()<<cmd;

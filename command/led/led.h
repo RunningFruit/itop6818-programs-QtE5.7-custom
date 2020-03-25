@@ -1,5 +1,5 @@
-#ifndef LED_H
-#define LED_H
+#ifndef MY_LED_H
+#define MY_LED_H
 
 
 class led
@@ -15,4 +15,4 @@ public:
     void led_close();
 };
 
-#endif // LED_H
+#endif // MY_LED_H

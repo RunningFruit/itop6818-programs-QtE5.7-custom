@@ -1,10 +1,8 @@
-#include "can.h"
+#include "cantest.h"
 
 #include <iostream>
-#include <qtextedit.h>
-#include <qprogressbar.h>
+
 #include <qtimer.h>
-#include <qapplication.h>
 
 #include <qstringlist.h>
 #include <stdio.h>
@@ -26,26 +24,36 @@
 #include <termio.h>
 #include <ctype.h>
 
+#include <QDebug>
 
-can::can()
-{
+
+cantest::cantest(){
+
     m_fd=openSerialPort();
 
     if (m_fd < 0) {
-        printf("Error, Fail to open serial port!");
+
+        qDebug()<<"Error"<<"Fail to open serial port!";
         return ;
     }
+    //m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
+//    connect (m_notifier, SIGNAL(activated(int)), this, SLOT(on_m_receive_destroyed()));
+
 }
 
-can::~can()
+cantest::~cantest()
 {
+    if (m_notifier) {
+        delete m_notifier;
+        m_notifier = 0;
+    }
 
     if (m_fd >= 0) {
         ::close(m_fd);
         m_fd = -1;
     }
 }
-int can::openSerialPort()
+int cantest::openSerialPort()
 {
     int s;
     struct sockaddr_can addr;
@@ -54,7 +62,7 @@ int can::openSerialPort()
     if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
     {
         perror("Create socket failed");
-        exit(-1);
+        exit(-3);
     }
 
     /* set up can interface */
@@ -76,7 +84,7 @@ int can::openSerialPort()
 
 
 struct can_frame frame;
-void can::on_m_receive_destroyed()
+void cantest::on_m_receive_destroyed()
 {
     int i;
     struct can_filter rfilter[1];
@@ -92,13 +100,13 @@ void can::on_m_receive_destroyed()
 
     if(read(m_fd, &frame, sizeof(frame)) <= 0 ){
         perror("read");
-        printf ("Error,Receive error!");
+        qDebug()<<("Error")<<("Receive error!");
         return;
     }
 
     for(i=0;i<8;i++){
         if(frame.data[i]!=NULL){
-            //ui->m_receive->setText(ui->m_receive->toPlainText()+frame.data[i]);
+            m_receive.append(frame.data[i]);
         }
     }
 
@@ -109,23 +117,24 @@ void can::on_m_receive_destroyed()
 
 
 
-void can::on_m_sendbutton_clicked()
+void cantest::sendMsg(QString text)
 {
     int i,j;
-
+    //unsigned char *c;
+    //struct can_filter rfilter[1];
+    /* configure can_id and can data length */
     frame.can_id = 0x1F;
     frame.can_dlc = 8;
     printf("send");
-    //QString text( ui->m_send->toPlainText());
-    QString text("");
+
     if (text.isEmpty()) {
         return ;
     }
     for(j=0;j<text.length(); ){
         memset(frame.data,0,sizeof(frame.data));
         for(i=0;i<8;i++){
-            //frame.data[i]=(text.data()+j)->toAscii();
-            frame.data[i]=NULL;
+
+            frame.data[i] = ((text.data()+j))->unicode();
             if(frame.data[i]!=NULL){
                 j++;
             }

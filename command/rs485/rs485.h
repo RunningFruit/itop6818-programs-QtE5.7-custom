@@ -1,5 +1,5 @@
-#ifndef RS485_H
-#define RS485_H
+#ifndef MY_RS485_H
+#define MY_RS485_H
 
 #include <qsocketnotifier.h>
 
@@ -26,4 +26,4 @@ private:
 
 };
 
-#endif // RS485_H
+#endif // MY_RS485_H

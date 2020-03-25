@@ -1,27 +1,29 @@
-#ifndef CAN_H
-#define CAN_H
+#ifndef CANTEST_H
+#define CANTEST_H
 
-
-#include <QDialog>
 #include <qsocketnotifier.h>
 
-class can
+
+
+class cantest
 {
 
 public:
-    explicit can();
-    ~can();
+    explicit cantest();
+    ~cantest();
 
 private slots:
     void on_m_receive_destroyed();
 
-    void on_m_sendbutton_clicked();
+    void sendMsg(QString text);
 private:
     int openSerialPort();
 
-private:    
+private:
+    QString m_receive="";
     int m_fd,fd2;
     QSocketNotifier *m_notifier;
+
 };
 
-#endif // CAN_H
+#endif // CANTEST_H
