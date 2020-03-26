@@ -1,5 +1,5 @@
-#ifndef NETWORKTCP_H
-#define NETWORKTCP_H
+#ifndef MY_NETWORKTCP_H
+#define MY_NETWORKTCP_H
 
 
 #include <QtNetwork/QTcpServer>
@@ -39,4 +39,4 @@ private :
     void slotReadMesg();
 };
 
-#endif // NETWORKTCP_H
+#endif // MY_NETWORKTCP_H

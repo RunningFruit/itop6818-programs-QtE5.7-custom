@@ -1,5 +1,5 @@
-#ifndef HTTPGETUTIL_H
-#define HTTPGETUTIL_H
+#ifndef MY_HTTPGETUTIL_H
+#define MY_HTTPGETUTIL_H
 
 #include <QObject>
 #include <QNetworkRequest>
@@ -23,4 +23,4 @@ public slots:
 
 };
 
-#endif // HTTPGETUTIL_H
+#endif // MY_HTTPGETUTIL_H

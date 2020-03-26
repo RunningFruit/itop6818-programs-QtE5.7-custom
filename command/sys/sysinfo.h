@@ -1,5 +1,5 @@
-#ifndef SYSINFO_H
-#define SYSINFO_H
+#ifndef MY_SYSINFO_H
+#define MY_SYSINFO_H
 
 
 #include <QObject>
@@ -10,7 +10,8 @@ class sysinfo:public QObject
 public:
     explicit sysinfo();
     ~sysinfo();
+    void getInfo();
 
 };
 
-#endif // SYSINFO_H
+#endif // MY_SYSINFO_H

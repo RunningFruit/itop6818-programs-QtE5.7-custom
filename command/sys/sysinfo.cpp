@@ -7,6 +7,13 @@
 
 sysinfo::sysinfo()
 {
+}
+
+sysinfo::~sysinfo(){
+}
+
+
+void sysinfo::getInfo(){
     pid_t	pid;
     int	ret	= 0;
     int	fd[2]	= { 0 };
@@ -36,7 +43,7 @@ sysinfo::sysinfo()
 
         char msg[100] = "";
         sprintf( msg, "%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c:%c%c",
-                result[7], result[8], result[10], result[11], result[13], result[14], result[16], result[17],
+                 result[7], result[8], result[10], result[11], result[13], result[14], result[16], result[17],
                 result[19], result[20], result[22], result[23], result[25],
                 result[26], result[28], result[29], result[31], result[32],
                 result[34], result[35], result[37], result[38], result[40],
@@ -45,9 +52,4 @@ sysinfo::sysinfo()
         printf( "---->%s\n", msg );
     }
 }
-
-sysinfo::~sysinfo(){
-
-}
-
 

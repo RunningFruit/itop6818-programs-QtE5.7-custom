@@ -1,5 +1,5 @@
-#ifndef DBUTIL_H
-#define DBUTIL_H
+#ifndef MY_DBUTIL_H
+#define MY_DBUTIL_H
 
 
 class dbutil
@@ -10,4 +10,4 @@ public:
 
 };
 
-#endif // DBUTIL_H
+#endif // MY_DBUTIL_H

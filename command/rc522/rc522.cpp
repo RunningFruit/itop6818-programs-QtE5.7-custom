@@ -367,9 +367,19 @@ char rc522::PcdAnticoll(unsigned char *pSnr)
     return status;
 }
 
-
-
 rc522::rc522(){
+}
+
+rc522::~rc522()
+{
+    if (m_fd >= 0) {
+        ::close(m_fd);
+        m_fd = -1;
+    }
+}
+
+
+void rc522::open(){
     char version = 0;
     parse_opts();
 
@@ -390,9 +400,11 @@ rc522::rc522(){
     usleep(50000);
     PcdAntennaOn();
 
+    m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
+    connect(m_notifier, SIGNAL(activated(int)), this, SLOT(on_id_Edit_read()));
 }
 
-rc522::~rc522()
+void rc522::close()
 {
     if (m_fd >= 0) {
         ::close(m_fd);

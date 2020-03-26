@@ -1,5 +1,5 @@
-#ifndef HTTP_UTIL_H
-#define HTTP_UTIL_H
+#ifndef MY_HTTP_UTIL_H
+#define MY_HTTP_UTIL_H
 
 #include <QObject>
 #include <QHttpMultiPart>
@@ -35,4 +35,4 @@ private:
     QNetworkReply *reply;
 };
 
-#endif // HTTP_UTIL_H
+#endif // MY_HTTP_UTIL_H

@@ -29,16 +29,6 @@
 
 cantest::cantest(){
 
-    m_fd=openSerialPort();
-
-    if (m_fd < 0) {
-
-        qDebug()<<"Error"<<"Fail to open serial port!";
-        return ;
-    }
-    //m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
-//    connect (m_notifier, SIGNAL(activated(int)), this, SLOT(on_m_receive_destroyed()));
-
 }
 
 cantest::~cantest()
@@ -53,7 +43,8 @@ cantest::~cantest()
         m_fd = -1;
     }
 }
-int cantest::openSerialPort()
+
+void cantest::openSerialPort()
 {
     int s;
     struct sockaddr_can addr;
@@ -78,13 +69,34 @@ int cantest::openSerialPort()
         perror("Bind can device failed\n");
         exit(-2);
     }
-    return s;
 
+
+    m_fd=s;
+
+    if (m_fd < 0) {
+
+        qDebug()<<"Error"<<"Fail to open serial port!";
+        return ;
+    }
+    m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
+    connect (m_notifier, SIGNAL(activated(int)), this, SLOT(remoteDataIncoming()));
+}
+
+void cantest::close(){
+    if (m_notifier) {
+        delete m_notifier;
+        m_notifier = 0;
+    }
+
+    if (m_fd >= 0) {
+        ::close(m_fd);
+        m_fd = -1;
+    }
 }
 
 
 struct can_frame frame;
-void cantest::on_m_receive_destroyed()
+void cantest::remoteDataIncoming()
 {
     int i;
     struct can_filter rfilter[1];

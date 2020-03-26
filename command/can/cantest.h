@@ -1,11 +1,12 @@
-#ifndef CANTEST_H
-#define CANTEST_H
+#ifndef MY_CANTEST_H
+#define MY_CANTEST_H
 
 #include <qsocketnotifier.h>
+#include <QObject>
 
 
 
-class cantest
+class cantest:public QObject
 {
 
 public:
@@ -13,11 +14,12 @@ public:
     ~cantest();
 
 private slots:
-    void on_m_receive_destroyed();
+    void remoteDataIncoming();
 
+public:
+    void openSerialPort();
     void sendMsg(QString text);
-private:
-    int openSerialPort();
+    void close();
 
 private:
     QString m_receive="";
@@ -26,4 +28,4 @@ private:
 
 };
 
-#endif // CANTEST_H
+#endif // MY_CANTEST_H

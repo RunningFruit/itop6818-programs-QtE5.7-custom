@@ -1,10 +1,10 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef MY_COMMON_H
+#define MY_COMMON_H
 
 
-#define URL_HTTP "http://47.98.119.123:8086/"
+#define URL_HTTP "http://47.98.119.123/"
 
-#define URL_WEBSOCKET "ws://47.98.119.123:8086/websocket"
+#define URL_WEBSOCKET "ws://47.98.119.123/websocket"
 
 
 //enum CMD_AD
@@ -77,5 +77,5 @@
 //};
 
 
-#endif // COMMON_H
+#endif // MY_COMMON_H
 

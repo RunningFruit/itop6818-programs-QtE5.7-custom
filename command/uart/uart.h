@@ -1,5 +1,5 @@
-#ifndef UART_H
-#define UART_H
+#ifndef MY_UART_H
+#define MY_UART_H
 
 
 #include <qsocketnotifier.h>
@@ -32,4 +32,4 @@ private:
 
 };
 
-#endif // UART_H
+#endif // MY_UART_H

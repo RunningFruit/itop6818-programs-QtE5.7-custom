@@ -2,9 +2,10 @@
 #define MY_RS485_H
 
 #include <qsocketnotifier.h>
+#include <QObject>
 
 
-class rs485
+class rs485 : QObject
 {
 public:
     explicit rs485();
@@ -14,8 +15,7 @@ public:
     void openSerialPort();
     void sendMsg( QString text);
     void close();
-    //QString unicodeToString(QString str);
-    //QString stringToUnicode(QString str);
+
 
 private:   
     void remoteDataIncoming();

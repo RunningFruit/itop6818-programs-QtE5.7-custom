@@ -1,5 +1,5 @@
-#ifndef JSON_UTIL_H
-#define JSON_UTIL_H
+#ifndef MY_JSON_UTIL_H
+#define MY_JSON_UTIL_H
 
 #include <QByteArray>
 #include <QJsonObject>
@@ -24,4 +24,4 @@ public:
 
 };
 
-#endif // JSON_UTIL_H
+#endif // MY_JSON_UTIL_H

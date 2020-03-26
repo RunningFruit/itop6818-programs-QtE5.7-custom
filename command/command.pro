@@ -18,6 +18,7 @@ SOURCES += \
         websocket/datareceive.cpp \
         ad/ad.cpp \
         buzzer/buzzer.cpp \
+        can/cantest.cpp \
         led/led.cpp \
         rc522/rc522.cpp \
         relay/relay.cpp \
@@ -33,10 +34,9 @@ SOURCES += \
         utils/HttpUtil.cpp \
         utils/HttpGetUtil.cpp \
         utils/HttpPostUtil.cpp \
+        utils/HttpDownFileUtil.cpp \
         shell/shell.cpp \
-    utils/HttpDownFileUtil.cpp \
-    can/cantest.cpp
-
+        gps/gps.cpp
 
 
 HEADERS  += \
@@ -44,6 +44,7 @@ HEADERS  += \
         websocket/datareceive.h \
         ad/ad.h \
         buzzer/buzzer.h \
+        can/cantest.h \
         led/led.h \
         rc522/rc522.h \
         relay/relay.h \
@@ -58,6 +59,6 @@ HEADERS  += \
         utils/HttpUtil.h \
         utils/HttpGetUtil.h \
         utils/HttpPostUtil.h \
+        utils/HttpDownFileUtil.h \
         shell/shell.h \
-    utils/HttpDownFileUtil.h \
-    can/cantest.h
+        gps/gps.h

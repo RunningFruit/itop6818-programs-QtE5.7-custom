@@ -144,6 +144,9 @@ void rs485::openSerialPort()
         printf("Error,Fail to open serial port!");
         return ;
     }
+
+    m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
+    connect (m_notifier, SIGNAL(activated(int)), this, SLOT(remoteDataIncoming()));
 }
 void rs485::sendMsg( QString text)
 {

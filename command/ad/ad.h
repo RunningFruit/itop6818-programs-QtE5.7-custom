@@ -9,7 +9,7 @@ public:
     explicit ad();
     ~ad();
 
-protected:
+public:
     void open();
 
 };

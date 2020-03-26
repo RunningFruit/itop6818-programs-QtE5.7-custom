@@ -1,5 +1,5 @@
-#ifndef BUZZER_H
-#define BUZZER_H
+#ifndef MY_BUZZER_H
+#define MY_BUZZER_H
 
 
 class buzzer
@@ -15,4 +15,4 @@ public:
 
 };
 
-#endif // BUZZER_H
+#endif // MY_BUZZER_H

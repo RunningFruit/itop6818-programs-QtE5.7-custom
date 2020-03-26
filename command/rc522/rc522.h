@@ -3,13 +3,16 @@
 
 
 #include <qsocketnotifier.h>
+#include <QObject>
 
-class rc522
+class rc522:public QObject
 {
 
 public:
     explicit rc522();
     ~rc522();
+    void open();
+    void close();
 
 private:
 

@@ -1,5 +1,5 @@
-#ifndef HTTPDOWNFILEUTIL_H
-#define HTTPDOWNFILEUTIL_H
+#ifndef MY_HTTPDOWNFILEUTIL_H
+#define MY_HTTPDOWNFILEUTIL_H
 
 #include <QObject>
 #include <QDateTime>
@@ -29,4 +29,4 @@ private:
 
 };
 
-#endif // HTTPDOWNFILEUTIL_H
+#endif // MY_HTTPDOWNFILEUTIL_H

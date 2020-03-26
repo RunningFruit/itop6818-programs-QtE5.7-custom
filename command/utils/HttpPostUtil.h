@@ -1,5 +1,5 @@
-#ifndef HTTPPOSTUTIL_H
-#define HTTPPOSTUTIL_H
+#ifndef MY_HTTPPOSTUTIL_H
+#define MY_HTTPPOSTUTIL_H
 
 #include <QObject>
 #include <QNetworkRequest>
@@ -25,4 +25,4 @@ public slots:
     void requestFinished(QNetworkReply* reply);
 };
 
-#endif // HTTPPOSTUTIL_H
+#endif // MY_HTTPPOSTUTIL_H

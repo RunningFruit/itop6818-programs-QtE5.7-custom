@@ -1,5 +1,5 @@
-﻿#ifndef DATARECEIVE_H
-#define DATARECEIVE_H
+﻿#ifndef MY_DATARECEIVE_H
+#define MY_DATARECEIVE_H
 
 #include <QtCore/QObject>
 #include <QWebSocket>
@@ -24,6 +24,8 @@
 #include "utils/JsonUtil.h"
 #include "utils/HttpPostUtil.h"
 #include "utils/HttpDownFileUtil.h"
+#include "can/cantest.h"
+#include "gps/gps.h"
 
 
 class DataReceive : public QObject
@@ -45,10 +47,14 @@ private:
 
 
 private:
+    void deviceCmd(QString device,QString cmd,QString msg);
+
+private:
     HttpPostUtil *postUtil;
     HttpDownFileUtil *downfileUtil;
     JsonUtil *jsonUtil;
-    void deviceCmd(QString device,QString cmd,QString msg);
+
+private:
     led *light;
     buzzer *buz;
     relay *rlay;
@@ -59,7 +65,8 @@ private:
     rs485 *m_rs485;
     MyTimer *m_3timer;
     shell *m_shell;
-
+    cantest *m_can;
+    gps *m_gps;
 
 private slots:
     void onConnected();                 /*-<socket建立成功后，触发该函数 */
@@ -67,5 +74,5 @@ private slots:
     void onDisConnected();              /*-<socket连接断开后，触发该函数 */
 };
 
-#endif // DATARECEIVE_H
+#endif // MY_DATARECEIVE_H
 

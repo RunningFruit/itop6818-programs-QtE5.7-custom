@@ -10,7 +10,7 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
         qDebug()<<"gethostid err\n";
         //        exit(0);
     }
-    //    qDebug()<<"hosid is :"<<hosid<<"\n";
+    //qDebug()<<"hosid is :"<<hosid<<"\n";
 
     m_connect_url = QString("%1%2%3")
             .arg(URL_WEBSOCKET)
@@ -32,6 +32,8 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     m_uart = new uart();
     m_rs485 = new rs485();
     m_3timer = new MyTimer();
+    m_can = new cantest();
+
 
     dataRecvWS = Q_NULLPTR;
     connectStatus = false;
@@ -75,8 +77,8 @@ void DataReceive::onConnected(){
     obj.insert("msg","hello");
 
     QString postUrl = QString(URL_HTTP).append("/device").append("/sayHello");
-    postUtil->post(postUrl,jsonUtil->jsonToString(obj));
 
+    postUtil->post(postUrl,jsonUtil->jsonToString(obj));
     downfileUtil->downloadFromUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584984114727&di=0d0f5e988b4da68d49eb4bd1dbdb0a52&imgtype=0&src=http%3A%2F%2Fatt.xmnn.cn%2Fbbs%2Fforum%2F201310%2F08%2F120516oqdxu9iliugmqsgm.jpg");
 
 }
@@ -157,13 +159,11 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
         }
     }
     else if(device == "rc522"){
-        /*
         if(cmd == "write"){
-            m_rc522->write();
+            m_rc522->open();
         }else  if(cmd == "read"){
-            m_rc522->read();
+            m_rc522->close();
         }
-        */
     }
     else if(device == "uart"){
         if(cmd == "on"){
@@ -188,6 +188,19 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
     }else if(device == "shell"){
         if(cmd == "on"){
             m_shell->cmd(msg);
+        }
+    }else if(device == "can"){
+        if(cmd == "on"){
+            m_can->openSerialPort();
+            m_can->sendMsg(msg);
+        }else if(cmd == "off"){
+            m_can->close();
+        }
+    }else if(device == "gps"){
+        if(cmd == "on"){
+            m_gps->open_device();
+        }else if(cmd == "off"){
+        }else{
         }
     }
     qDebug()<<cmd;
