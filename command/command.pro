@@ -13,8 +13,7 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += \
-        main.cpp \
+SOURCES += main.cpp \
         websocket/datareceive.cpp \
         ad/ad.cpp \
         buzzer/buzzer.cpp \
@@ -36,11 +35,11 @@ SOURCES += \
         utils/HttpPostUtil.cpp \
         utils/HttpDownFileUtil.cpp \
         shell/shell.cpp \
-        gps/gps.cpp
+        gps/gps.cpp \
+    my_opencv/imgcompare.cpp
 
 
-HEADERS  += \
-        common/common.h \
+HEADERS  += common/common.h \
         websocket/datareceive.h \
         ad/ad.h \
         buzzer/buzzer.h \
@@ -61,4 +60,14 @@ HEADERS  += \
         utils/HttpPostUtil.h \
         utils/HttpDownFileUtil.h \
         shell/shell.h \
-        gps/gps.h
+        gps/gps.h \
+    my_opencv/imgcompare.h
+
+
+
+INCLUDEPATH += /usr/local/include \
+               /usr/local/include/opencv \
+               /usr/local/include/opencv2
+
+LIBS += /usr/local/lib/libopencv*
+

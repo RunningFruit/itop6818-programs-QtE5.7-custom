@@ -2,9 +2,9 @@
 #define MY_COMMON_H
 
 
-#define URL_HTTP "http://47.98.119.123/"
+#define URL_HTTP "https://brightereyer.com/websocket"
 
-#define URL_WEBSOCKET "ws://47.98.119.123/websocket"
+#define URL_WEBSOCKET "ws://brightereyer.com/websocket/websocket"
 
 
 //enum CMD_AD

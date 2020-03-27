@@ -26,6 +26,7 @@
 #include "utils/HttpDownFileUtil.h"
 #include "can/cantest.h"
 #include "gps/gps.h"
+#include "my_opencv/imgcompare.h"
 
 
 class DataReceive : public QObject
@@ -55,9 +56,9 @@ private:
     JsonUtil *jsonUtil;
 
 private:
-    led *light;
-    buzzer *buz;
-    relay *rlay;
+    led *m_led;
+    buzzer *m_buzzer;
+    relay *m_relay;
     rtc *m_rtc;
     watchdog *m_watchdog;
     rc522 *m_rc522;
@@ -67,6 +68,7 @@ private:
     shell *m_shell;
     cantest *m_can;
     gps *m_gps;
+    imgcompare *m_imgcompare;
 
 private slots:
     void onConnected();                 /*-<socket建立成功后，触发该函数 */

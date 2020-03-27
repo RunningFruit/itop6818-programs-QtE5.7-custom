@@ -23,9 +23,9 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     downfileUtil = new HttpDownFileUtil();
     jsonUtil = new JsonUtil();
 
-    light = new led();
-    buz = new buzzer();
-    rlay = new relay();
+    m_led = new led();
+    m_buzzer = new buzzer();
+    m_relay = new relay();
     m_rtc = new rtc();
     m_watchdog = new watchdog();
     m_rc522 = new rc522();
@@ -33,6 +33,7 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     m_rs485 = new rs485();
     m_3timer = new MyTimer();
     m_can = new cantest();
+    m_imgcompare = new imgcompare();
 
 
     dataRecvWS = Q_NULLPTR;
@@ -115,35 +116,35 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
     if(device == "led"){
 
         if(cmd == "on"){
-            light->led_open();
+            m_led->led_open();
         }else if(cmd == "off"){
-            light->led_toggle();
+            m_led->led_toggle();
         }else if(cmd == "close"){
-            light->led_close();
+            m_led->led_close();
         }else{
-            light->led_close();
+            m_led->led_close();
         }
 
     }else if(device == "buzzer"){
         if(cmd == "on"){
-            buz->buzzer_open();
+            m_buzzer->buzzer_open();
         }else if(cmd == "off"){
-            buz->buzzer_toggle();
+            m_buzzer->buzzer_toggle();
         }else if(cmd == "close"){
-            buz->buzzer_close();
+            m_buzzer->buzzer_close();
         }else{
-            buz->buzzer_close();
+            m_buzzer->buzzer_close();
         }
     }
     else if(device == "relay"){
         if(cmd == "on"){
-            rlay->relay_open();
+            m_relay->relay_open();
         }else if(cmd == "off"){
-            rlay->relay_toggle();
+            m_relay->relay_toggle();
         }else if(cmd == "close"){
-            rlay->relay_close();
+            m_relay->relay_close();
         }else{
-            rlay->relay_close();
+            m_relay->relay_close();
         }
     }
     else if(device == "rtc"){
@@ -199,6 +200,12 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
     }else if(device == "gps"){
         if(cmd == "on"){
             m_gps->open_device();
+        }else if(cmd == "off"){
+        }else{
+        }
+    }else if(device == "opencv"){
+        if(cmd == "on"){
+            m_imgcompare->compareImg("","");
         }else if(cmd == "off"){
         }else{
         }

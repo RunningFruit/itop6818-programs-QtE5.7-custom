@@ -13,6 +13,14 @@ void HttpDownFileUtil::downloadFromUrl(QString url_name){
     savePhotoFromUrl(url_name,fileName);
 }
 
+//void HttpDownFileUtil::downFromUrlAndSaveTo(QString url_name,QString saveFileDir){
+//    QDateTime datetime;
+//    QString timestr=datetime.currentDateTime().toString("yyyyMMddHHmmss");
+//    QString fileName = saveFileDir + timestr + ".jpg";//指定文件夹路径
+//    qDebug() << "file:" << distFilePath << endl;
+//    savePhotoFromUrl(url_name,distFilePath);
+//}
+
 bool HttpDownFileUtil::savePhotoFromUrl(const QString &url, const QString &fileName)
 {
     //构造请求
