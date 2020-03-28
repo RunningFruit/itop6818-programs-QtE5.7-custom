@@ -12,6 +12,10 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
+#QMAKE_LFLAGS = -static
+
+#CONFIG+=static
+
 
 SOURCES += main.cpp \
         websocket/datareceive.cpp \
@@ -65,9 +69,16 @@ HEADERS  += common/common.h \
 
 
 
-INCLUDEPATH += /usr/local/include \
-               /usr/local/include/opencv \
-               /usr/local/include/opencv2
+#INCLUDEPATH += /usr/local/include \
+#               /usr/local/include/opencv \
+#               /usr/local/include/opencv2
 
-LIBS += /usr/local/lib/libopencv*
+#LIBS += /usr/local/lib/libopencv*
+
+
+INCLUDEPATH += /usr/local/arm/opencv-arm/include \
+               /usr/local/arm/opencv-arm/include/opencv \
+               /usr/local/arm/opencv-arm/include/opencv2
+
+LIBS += /usr/local/arm/opencv-arm/lib/libopencv*
 
