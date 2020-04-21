@@ -10,7 +10,6 @@ public:
 
 public:
     void buzzer_open();
-    void buzzer_toggle();
     void buzzer_close();
 
 };

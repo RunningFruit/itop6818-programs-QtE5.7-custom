@@ -10,7 +10,6 @@ public:
 
 public:
     void relay_open();
-    void relay_toggle();
     void relay_close();
 };
 

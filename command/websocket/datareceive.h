@@ -26,7 +26,7 @@
 #include "utils/HttpDownFileUtil.h"
 #include "can/cantest.h"
 #include "gps/gps.h"
-#include "my_opencv/imgcompare.h"
+//#include "my_opencv/imgcompare.h"
 
 
 class DataReceive : public QObject
@@ -68,7 +68,7 @@ private:
     shell *m_shell;
     cantest *m_can;
     gps *m_gps;
-    imgcompare *m_imgcompare;
+//    imgcompare *m_imgcompare;
 
 private slots:
     void onConnected();                 /*-<socket建立成功后，触发该函数 */

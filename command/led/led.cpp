@@ -30,24 +30,26 @@ void led::led_open()
     if(fb<0)
     {
         perror("open device led failed!");
-//        exit(1);
+        exit(1);
     }
-}
 
-void led::led_toggle()
-{
-    LED=~LED;
-    if(LED==0)
+    LED=1;
+    int OnOffTimes=3;
+
+    while(OnOffTimes--)
     {
+        printf("ioctl led %d times\n",OnOffTimes);
         ioctl(fb,1,0);
-    }
-    else
-    {
+        sleep(1);
         ioctl(fb,0,0);
+        sleep(1);
     }
 }
 
 void led::led_close()
 {
-   close(fb);
+    ioctl(fb,0,0);
+    sleep(1);
+    close(fb);
+    printf ("led close ok");
 }

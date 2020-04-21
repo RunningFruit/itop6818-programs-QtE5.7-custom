@@ -26,24 +26,26 @@ void buzzer::buzzer_open(){
     if(fb<0)
     {
         perror("open device buzzer failed!");
-//        exit(1);
+        exit(1);
+    }
+
+
+    int BuzzerOnOffTimes=3;
+
+    while(BuzzerOnOffTimes--)
+    {
+        printf("ioctl buzzer %d times\n",BuzzerOnOffTimes);
+        ioctl(fb,1,0);	//parameter 2 is cmd ,cmd = 1 buzzer on
+        sleep(1);
+        ioctl(fb,0,0);
+        sleep(1);
     }
 }
 
-void buzzer::buzzer_toggle()
-{
-    BUZZER=~BUZZER;
-    if(BUZZER==0)
-    {
-        ioctl(fb,1,0);
-    }
-    else
-    {
-        ioctl(fb,0,0);
-    }
-}
 
 void buzzer::buzzer_close()
 {
+    ioctl(fb,0,0);
+    sleep(1);
     close(fb);
 }

@@ -28,28 +28,18 @@ void relay::relay_open()
     if(fb<0)
     {
         perror("open device relay failed!");
-        //        exit(1);
+        exit(1);
     }
-}
 
-void relay::relay_toggle()
-{
-    RELAY=~RELAY;
-    if(RELAY)
-    {
-        ioctl(fb,1,1);
-        printf ("ok");
-    }
-    else
-    {
-        ioctl(fb,0,0);
-        printf ("ok");
-    }
+    ioctl(fb,1,1);
+    printf ("relay open ok");
 }
 
 
 void relay::relay_close()
 {
-    ::close(fb);
+    ioctl(fb,0,0);
+    printf ("relay close ok");
+    close(fb);
 }
 

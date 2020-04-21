@@ -11,7 +11,6 @@ public:
 
 public:
     void led_open();
-    void led_toggle();
     void led_close();
 };
 

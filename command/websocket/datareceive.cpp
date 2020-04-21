@@ -4,18 +4,25 @@
 
 DataReceive::DataReceive(QObject *parent):QObject(parent)
 {
-    int hosid;
-    if(-1==(hosid=gethostid()))
-    {
-        qDebug()<<"gethostid err\n";
-        //        exit(0);
+
+    const int N = 300;
+    char line[N];
+    FILE *fp;
+
+    if ((fp = popen("cat /sys/devices/platform/cpu/uuid", "r")) == NULL) {
+        printf("popen error");
+        return;
     }
-    //qDebug()<<"hosid is :"<<hosid<<"\n";
+    printf("uuid:");
+    while (fgets(line, sizeof(line)-1, fp) != NULL){
+        printf("%s",line);
+    }
+    pclose(fp);
 
     m_connect_url = QString("%1%2%3")
             .arg(URL_WEBSOCKET)
             .arg("/itop6818-")
-            .arg(hosid);
+            .arg(line);
 
     printf("connect_url is :%s\n",m_connect_url.toStdString().data());
 
@@ -33,7 +40,7 @@ DataReceive::DataReceive(QObject *parent):QObject(parent)
     m_rs485 = new rs485();
     m_3timer = new MyTimer();
     m_can = new cantest();
-    m_imgcompare = new imgcompare();
+    //    m_imgcompare = new imgcompare();
 
 
     dataRecvWS = Q_NULLPTR;
@@ -118,7 +125,7 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
         if(cmd == "on"){
             m_led->led_open();
         }else if(cmd == "off"){
-            m_led->led_toggle();
+            m_led->led_close();
         }else if(cmd == "close"){
             m_led->led_close();
         }else{
@@ -128,10 +135,6 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
     }else if(device == "buzzer"){
         if(cmd == "on"){
             m_buzzer->buzzer_open();
-        }else if(cmd == "off"){
-            m_buzzer->buzzer_toggle();
-        }else if(cmd == "close"){
-            m_buzzer->buzzer_close();
         }else{
             m_buzzer->buzzer_close();
         }
@@ -139,10 +142,6 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
     else if(device == "relay"){
         if(cmd == "on"){
             m_relay->relay_open();
-        }else if(cmd == "off"){
-            m_relay->relay_toggle();
-        }else if(cmd == "close"){
-            m_relay->relay_close();
         }else{
             m_relay->relay_close();
         }
@@ -204,11 +203,11 @@ void DataReceive::deviceCmd(QString device,QString cmd,QString msg){
         }else{
         }
     }else if(device == "opencv"){
-        if(cmd == "on"){
-            m_imgcompare->compareImg("","");
-        }else if(cmd == "off"){
-        }else{
-        }
+        //        if(cmd == "on"){
+        //            m_imgcompare->compareImg("","");
+        //        }else if(cmd == "off"){
+        //        }else{
+        //        }
     }
     qDebug()<<cmd;
 }
