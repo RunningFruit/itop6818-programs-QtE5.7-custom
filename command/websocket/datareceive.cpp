@@ -5,24 +5,11 @@
 DataReceive::DataReceive(QObject *parent):QObject(parent)
 {
 
-    const int N = 300;
-    char line[N];
-    FILE *fp;
-
-    if ((fp = popen("cat /sys/devices/platform/cpu/uuid", "r")) == NULL) {
-        printf("popen error");
-        return;
-    }
-    printf("uuid:");
-    while (fgets(line, sizeof(line)-1, fp) != NULL){
-        printf("%s",line);
-    }
-    pclose(fp);
-
+    uuid = getUUID();
     m_connect_url = QString("%1%2%3")
             .arg(URL_WEBSOCKET)
             .arg("/itop6818-")
-            .arg(line);
+            .arg(uuid);
 
     printf("connect_url is :%s\n",m_connect_url.toStdString().data());
 
@@ -52,6 +39,23 @@ DataReceive::~DataReceive(){
 
 }
 
+QString DataReceive::getUUID(){
+    const int N = 300;
+    char line[N];
+    FILE *fp;
+
+    if ((fp = popen("cat /sys/devices/platform/cpu/uuid", "r")) == NULL) {
+        printf("popen error");
+        return "null";
+    }
+    printf("uuid:");
+    while (fgets(line, sizeof(line)-1, fp) != NULL){
+        printf("%s",line);
+    }
+    pclose(fp);
+
+    return QString(QLatin1String(line));
+}
 /**
  * @breaf 创建WebSocket连接
  */
@@ -81,14 +85,21 @@ void DataReceive::onConnected(){
     qDebug()<<"Address："<<dataRecvWS->peerAddress();
 
 
-    QJsonObject obj;
-    obj.insert("msg","hello");
+    //    QJsonObject obj;
+    //    obj.insert("msg","hello");
+    //    QString postUrl = QString(URL_HTTP).append("/device").append("/sayHello");
 
-    QString postUrl = QString(URL_HTTP).append("/device").append("/sayHello");
+
+    QJsonObject obj;
+    obj.insert("ip",dataRecvWS->peerAddress().toString());
+    obj.insert("mac",uuid);
+    obj.insert("longitude","1");
+    obj.insert("latitude","2");
+    obj.insert("location","3");
+    QString postUrl = QString(URL_HTTP).append("/mainControl");
 
     postUtil->post(postUrl,jsonUtil->jsonToString(obj));
     downfileUtil->downloadFromUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584984114727&di=0d0f5e988b4da68d49eb4bd1dbdb0a52&imgtype=0&src=http%3A%2F%2Fatt.xmnn.cn%2Fbbs%2Fforum%2F201310%2F08%2F120516oqdxu9iliugmqsgm.jpg");
-
 }
 
 /**
