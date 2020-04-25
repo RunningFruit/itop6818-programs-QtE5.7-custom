@@ -1,14 +1,6 @@
 #include "gps.h"
 
-#include <stdio.h>      /*标准输入输出定义*/
-#include <stdlib.h>     /*标准函数库定义*/
-#include <unistd.h>     /*Unix 标准函数定义*/
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <string.h>
-#include <fcntl.h>
-#include <termios.h>
+
 
 #define  BUFF_SIZE 512
 #define  MAX_COM_NUM 3
@@ -36,7 +28,12 @@ gps::~gps(){
 
 }
 
-int gps::set_com_config(int fd, int baud_rate, int data_bits, char parity, int stop_bits)
+void gps::close_device(){
+    m_fd = 0;
+    close(m_fd);
+}
+
+int gps::set_com_config( int fd,int baud_rate, int data_bits, char parity, int stop_bits)
 {
     struct termios new_cfg, old_cfg;
     int speed;
@@ -168,27 +165,24 @@ int gps::set_com_config(int fd, int baud_rate, int data_bits, char parity, int s
 }
 
 void gps::open_device(){
-    int fd = 0;
-    char* HOST_COM_PORT = "/dev/ttyAMA3";
+    char* HOST_COM_PORT = "/dev/ttySAC3";
 
-    //    if (2 != argc)
-    //    {
-    //        printf("Usage:  gps_test [uart port]\r\n");
-    //        return;
-    //    }
-
-    fd = open_port(HOST_COM_PORT);
-    if (fd < 0)
+    m_fd = open_port(HOST_COM_PORT);
+    if (m_fd < 0)
     {
         perror("open fail!");
+        return;
     }
-    printf("open sucess!\n");
-    if ((set_com_config(fd, 9600, 8, 'N', 1)) < 0)
+    qDebug()<<("open sucess!")<<endl;
+    if ((set_com_config(m_fd, 9600, 8, 'N', 1)) < 0)
     {
-        perror("set_com_config fail!\n");
+        //perror("set_com_config fail!\n");
+        qDebug()<<("set_com_config fail!")<<endl;
+        return;
     }
-    printf("The received worlds are:\n");
-    read_data(fd);
+    qDebug()<<("The received worlds are:")<<endl;
+
+    read_data();
     return;
 }
 
@@ -222,12 +216,12 @@ int gps::open_port(char* com_port)
 void gps::print_info(void)
 {
     //打印选择界面，即引导的字符号
-    printf("Now the receive time is %s\n", GPS_DATA.GPS_time);
-    printf("The star is %c 3\n", GPS_DATA.GPS_sv);
-    printf("The earth latitude is :%s\n", GPS_DATA.GPS_wd);
-    printf("The earth longitude is :%s\n", GPS_DATA.GPS_jd);
-    printf("The train speed is:%s km/h\n", GPS_DATA.GPS_speed);
-    printf("The date is:%s\n", GPS_DATA.GPS_date);
+    qDebug()<<("Now the receive time is : ")<< GPS_DATA.GPS_time<<endl;
+    qDebug()<<("The star is : ")<< GPS_DATA.GPS_sv<< " 3"<<endl;
+    qDebug()<<("The earth latitude is : ")<< GPS_DATA.GPS_wd<<endl;
+    qDebug()<<("The earth longitude is : ")<< GPS_DATA.GPS_jd<<endl;
+    qDebug()<<("The train speed is : ")<< GPS_DATA.GPS_speed<< "km/h" <<endl;
+    qDebug()<<("The date is : ")<<GPS_DATA.GPS_date<<endl;
 
 }
 
@@ -235,7 +229,6 @@ void gps::print_info(void)
 void gps::GPS_resolve_GPRMC(char data)
 {
     //$GPRMC,092427.604,V,4002.1531,N,11618.3097,E,0.000,0.00,280812,,E,N*08
-
 
     if (data == ',')
     {
@@ -302,7 +295,7 @@ void gps::GPS_resolve_GPRMC(char data)
 
 }
 
-void gps::read_data(int fd)
+void gps::read_data()
 {
     char buffer[BUFF_SIZE], dest[1024];
     char array[10] = "$GPRMC";
@@ -314,7 +307,7 @@ void gps::read_data(int fd)
     {
         memset(buffer, 0, sizeof(buffer));
         //$GPRMC,024813.640,A,3158.4608,N,11848.3737,E,10.05,324.27,150706,,,A*50
-        if (res = read(fd, buffer, 1) > 0)
+        if (res = read(m_fd, buffer, 1) > 0)
         {
             //此处源源不断传入参数，一次读到数据可能为（$GPRMC,024），res为读到长度，现在把每一位传入函数处理；
             strcat(dest, buffer);
@@ -323,7 +316,7 @@ void gps::read_data(int fd)
                 i = 0;
                 if (strncmp(dest, array, 6) == 0)
                 {
-                    printf("%s", dest);
+                    qDebug()<<("%s", dest);
                     len = strlen(dest);
                     for (k = 0; k < len; k++)
                     {
@@ -338,5 +331,5 @@ void gps::read_data(int fd)
 
         }
     } while (1);
-    close(fd);
+    close(m_fd);
 }

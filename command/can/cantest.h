@@ -3,6 +3,29 @@
 
 #include <qsocketnotifier.h>
 #include <QObject>
+#include <QDebug>
+#include <qtimer.h>
+
+#include <qstringlist.h>
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <unistd.h>
+#include <stdlib.h>
+#include <net/if.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <linux/can.h>
+#include <linux/can/raw.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <linux/fs.h>
+#include <errno.h>
+
+#include <termio.h>
+#include <ctype.h>
 
 
 
@@ -23,7 +46,7 @@ public:
 
 private:
     QString m_receive="";
-    int m_fd,fd2;
+    int m_fd;
     QSocketNotifier *m_notifier;
 
 };

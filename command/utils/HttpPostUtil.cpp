@@ -34,7 +34,7 @@ void HttpPostUtil::requestFinished(QNetworkReply* reply) {
     // 获取http状态码
     QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
     if(statusCode.isValid())
-        qDebug() << "status code=" << statusCode.toInt();
+        qDebug() << "http状态码:" << statusCode.toInt();
 
     QVariant reason = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     if(reason.isValid())

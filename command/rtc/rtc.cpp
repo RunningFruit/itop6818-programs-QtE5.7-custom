@@ -1,8 +1,6 @@
 #include "rtc.h"
 
-#include <QDate>
-#include <QTime>
-#include <stdio.h>
+
 
 rtc::rtc()
 {

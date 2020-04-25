@@ -28,7 +28,6 @@ SOURCES += main.cpp \
         relay/relay.cpp \
         rs485/rs485.cpp \
         rtc/rtc.cpp \
-        tcp/tcp.cpp \
         timer/MyTimer.cpp \
         uart/uart.cpp \
         watchdog/watchdog.cpp \
@@ -40,7 +39,9 @@ SOURCES += main.cpp \
         utils/HttpPostUtil.cpp \
         utils/HttpDownFileUtil.cpp \
         shell/shell.cpp \
-        gps/gps.cpp
+        gps/gps.cpp \
+    tcp/tcpserver.cpp \
+    tcp/tcpclient.cpp
 
 
 HEADERS  += common/common.h \
@@ -53,7 +54,6 @@ HEADERS  += common/common.h \
         relay/relay.h \
         rs485/rs485.h \
         rtc/rtc.h \
-        tcp/tcp.h \
         timer/MyTimer.h \
         uart/uart.h \
         watchdog/watchdog.h \
@@ -64,6 +64,6 @@ HEADERS  += common/common.h \
         utils/HttpPostUtil.h \
         utils/HttpDownFileUtil.h \
         shell/shell.h \
-        gps/gps.h
-
-#LIBS+=/usr/local/arm/arm-2014.05/arm-none-linux-gnueabi/libc/usr/lib/*
+        gps/gps.h \
+    tcp/tcpserver.h \
+    tcp/tcpclient.h

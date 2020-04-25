@@ -50,8 +50,8 @@ void HttpUtil::uploadFinished(){
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();//http返回码
 
 
-    printf(strResult.toStdString().data());
-    printf(QString("%1").arg(statusCode).toStdString().data());
+    qDebug()<<(strResult.toStdString().data());
+    qDebug()<<(QString("%1").arg(statusCode).toStdString().data());
 }
 
 void HttpUtil::uploadError(QNetworkReply::NetworkError code){

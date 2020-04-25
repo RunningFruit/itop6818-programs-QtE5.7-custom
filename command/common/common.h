@@ -2,7 +2,11 @@
 #define MY_COMMON_H
 
 
-#define URL_HTTP "https://brightereyer.com/websocket"
+#define URL_HTTPS "https://brightereyer.com/websocket"
+
+#define URL_HTTP "http://brightereyer.com/websocket"
+
+#define IP_HTTP "http://47.98.119.123:8087/websocket"
 
 #define URL_WEBSOCKET "ws://brightereyer.com/websocket/websocket"
 

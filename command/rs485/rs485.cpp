@@ -1,21 +1,5 @@
 #include "rs485.h"
 
-#include <qtimer.h>
-#include <qstringlist.h>
-
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <linux/fs.h>
-#include <errno.h>
-#include <string.h>
-#include <termio.h>
-#include <unistd.h>
-#include <cstdlib>
 
 rs485::rs485(){
 }
@@ -29,10 +13,12 @@ rs485::~rs485()
 
 void rs485::close()
 {
+    qDebug()<<("try to close rs485 ...")<<endl;
     if (m_fd >= 0) {
         ::close(m_fd);
         m_fd = -1;
     }
+    qDebug()<<("rs485 closed")<<endl;
 }
 
 int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
@@ -122,15 +108,17 @@ int set_opt(int fd,int nSpeed, int nBits, char nEvent, int nStop)
 
 void rs485::openSerialPort()
 {
+    qDebug()<<("----------- rs485 ------------")<<endl;
+
     int fd=-1;
 
-    const char *tty = "/dev/ttySAC11";
+    const char *tty = "/dev/ttySAC1";
     fd = ::open(tty, O_RDWR|O_NONBLOCK);
     if(fd <0 )
-        printf("open ttySAC1 failed\n");
+        qDebug()<<("open ttySAC1 failed")<<endl;
     else
     {
-        printf("open ttySAC1 success\n");
+        qDebug()<<("open ttySAC1 success")<<endl;
         set_opt(fd, 9600, 8, 'N', 1);
     }
 
@@ -139,9 +127,9 @@ void rs485::openSerialPort()
 
     fd2 = ::open("/dev/max485_ctl_pin",0);
     if(fd2 < 0)
-        printf("on_m_sendButton_clicked Open max485_ctl faild\n");
+        qDebug()<<("on_m_sendButton_clicked Open max485_ctl faild")<<endl;
     if (m_fd < 0) {
-        printf("Error,Fail to open serial port!");
+        qDebug()<<("Error,Fail to open serial port!")<<endl;
         return ;
     }
 
@@ -168,13 +156,13 @@ void rs485::remoteDataIncoming()
     char c;
 
     if(fd2 < 0)
-        printf("remoteDataIncoming Open max485_ctl faild\n");
+        qDebug()<<("remoteDataIncoming Open max485_ctl faild")<<endl;
     ret = ioctl(fd2, 0, 0);
-    printf("ret is %d\n",ret);
+    qDebug()<<("ret is ")<<ret<<endl;
     if (read(m_fd, &c, sizeof c) != 1) {
-        printf("Error,Receive error!");
+        qDebug()<<("Error,Receive error!");
         return;
     }
     if(c!=NULL)
-        printf("%s\n",c);
+        qDebug()<<(c)<<endl;
 }

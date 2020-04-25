@@ -3,8 +3,23 @@
 
 
 #include <qsocketnotifier.h>
+#include <QDebug>
 
+#include <qtimer.h>
+#include <qstringlist.h>
 
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <linux/fs.h>
+#include <errno.h>
+#include <string.h>
+#include <termio.h>
 
 class uart : public QObject
 {

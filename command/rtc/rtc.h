@@ -5,6 +5,9 @@
 #include <QTimerEvent>
 #include <QObject>
 
+#include <QDate>
+#include <QTime>
+#include <stdio.h>
 
 class rtc:public QObject
 {

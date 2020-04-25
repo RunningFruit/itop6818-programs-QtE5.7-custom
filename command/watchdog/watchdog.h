@@ -4,6 +4,15 @@
 #include <QBasicTimer>
 #include <QTimerEvent>
 #include <QObject>
+#include <QDebug>
+
+
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/types.h>
+#include <linux/watchdog.h>
+
 
 class watchdog:public QObject
 {

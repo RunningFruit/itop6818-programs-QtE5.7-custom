@@ -1,9 +1,6 @@
 #include "sysinfo.h"
 
-#include <stdio.h>
-#include <sys/wait.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 
 sysinfo::sysinfo()
 {
@@ -49,7 +46,7 @@ void sysinfo::getInfo(){
                 result[34], result[35], result[37], result[38], result[40],
                 result[41], result[43], result[44], result[46], result[47],
                 result[49], result[50], result[52], result[53] );
-        printf( "---->%s\n", msg );
+        qDebug()<<( "---->")<<( msg )<<endl;
     }
 }
 

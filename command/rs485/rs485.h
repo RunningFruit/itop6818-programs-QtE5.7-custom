@@ -3,7 +3,24 @@
 
 #include <qsocketnotifier.h>
 #include <QObject>
+#include <QDebug>
 
+#include <qtimer.h>
+#include <qstringlist.h>
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <linux/fs.h>
+#include <errno.h>
+#include <string.h>
+#include <termio.h>
+#include <unistd.h>
+#include <cstdlib>
 
 class rs485 : QObject
 {

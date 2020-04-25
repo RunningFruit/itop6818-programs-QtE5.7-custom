@@ -26,8 +26,12 @@
 #include "utils/HttpDownFileUtil.h"
 #include "can/cantest.h"
 #include "gps/gps.h"
+#include "tcp/tcpserver.h"
+#include "tcp/tcpclient.h"
 //#include "my_opencv/imgcompare.h"
 
+#include <exception>
+using namespace std;
 
 class DataReceive : public QObject
 {
@@ -53,6 +57,7 @@ private:
 
 private:
     void deviceCmd(QString device,QString cmd,QString msg);
+    void postBaseMsg();
 
 private:
     HttpPostUtil *postUtil;
@@ -72,7 +77,9 @@ private:
     shell *m_shell;
     cantest *m_can;
     gps *m_gps;
-//    imgcompare *m_imgcompare;
+    TcpServer *m_tcpserver;
+    TcpClient *m_tcpclient;
+    //imgcompare *m_imgcompare;
 
 private slots:
     void onConnected();                 /*-<socket建立成功后，触发该函数 */

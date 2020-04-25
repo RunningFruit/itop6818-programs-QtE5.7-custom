@@ -1,30 +1,5 @@
 #include "cantest.h"
 
-#include <iostream>
-
-#include <qtimer.h>
-
-#include <qstringlist.h>
-#include <stdio.h>
-#include <string>
-#include <unistd.h>
-#include <stdlib.h>
-#include <net/if.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <linux/can.h>
-#include <linux/can/raw.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include <linux/fs.h>
-#include <errno.h>
-
-#include <termio.h>
-#include <ctype.h>
-
-#include <QDebug>
 
 
 cantest::cantest(){
@@ -52,13 +27,14 @@ void cantest::openSerialPort()
 
     if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
     {
-        perror("Create socket failed");
+//        perror("Create socket failed");
+        qDebug()<<"can 创建socket失败!";
         exit(-3);
     }
 
     /* set up can interface */
     strcpy(ifr.ifr_name, "can0");
-    //printf("can port is %s\n",ifr.ifr_name);
+    //qDebug()<<("can port is %s\n",ifr.ifr_name);
     /* assign can device */
     ioctl(s, SIOCGIFINDEX, &ifr);
     addr.can_family = AF_CAN;
@@ -66,7 +42,8 @@ void cantest::openSerialPort()
     /* bind can device */
     if(bind(s, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
-        perror("Bind can device failed\n");
+        //perror("Bind can device failed\n");
+        qDebug()<<"绑定 can 设备失败!";
         exit(-2);
     }
 
@@ -74,15 +51,19 @@ void cantest::openSerialPort()
     m_fd=s;
 
     if (m_fd < 0) {
-
-        qDebug()<<"Error"<<"Fail to open serial port!";
+//        qDebug()<<"Error"<<"Fail to open serial port!";
+        qDebug()<<"can 打开串口失败!";
         return ;
     }
+
+    qDebug()<<"can created!"<<endl;
+
     m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
     connect (m_notifier, SIGNAL(activated(int)), this, SLOT(remoteDataIncoming()));
 }
 
 void cantest::close(){
+    qDebug()<<"尝试关闭can!"<<endl;
     if (m_notifier) {
         delete m_notifier;
         m_notifier = 0;
@@ -105,14 +86,15 @@ void cantest::remoteDataIncoming()
     rfilter[0].can_mask = CAN_SFF_MASK;
     if(setsockopt(m_fd, SOL_CAN_RAW, CAN_RAW_FILTER, &rfilter, sizeof(rfilter)) < 0)
     {
-        perror("set receiving filter error\n");
+        //perror("set receiving filter error\n");
+        qDebug()<< ("设置接收滤波器错误")<<endl;
         exit(-3);
     }
     /* keep reading */
 
     if(read(m_fd, &frame, sizeof(frame)) <= 0 ){
         perror("read");
-        qDebug()<<("Error")<<("Receive error!");
+        qDebug()<<("Error")<<("Receive error!")<<endl;
         return;
     }
 
@@ -122,8 +104,8 @@ void cantest::remoteDataIncoming()
         }
     }
 
-    printf ("%s\n",frame.data);
-    printf ("receive");
+    qDebug()<< (frame.data)<<endl;
+    qDebug()<< ("can 接收")<<endl;
 
 }
 
@@ -137,7 +119,7 @@ void cantest::sendMsg(QString text)
     /* configure can_id and can data length */
     frame.can_id = 0x1F;
     frame.can_dlc = 8;
-    printf("send");
+    qDebug()<<("can 发送")<<endl;
 
     if (text.isEmpty()) {
         return ;
@@ -154,8 +136,7 @@ void cantest::sendMsg(QString text)
                 break;
         }
         write(m_fd,&frame,sizeof(frame));
-        printf ("%s\n",frame.data);
-
+        qDebug()<< (frame.data)<<endl;
     }
 
 }

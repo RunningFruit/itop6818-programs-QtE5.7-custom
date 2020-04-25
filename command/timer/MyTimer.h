@@ -1,30 +1,28 @@
 #ifndef MY_TIMER_H
 #define MY_TIMER_H
 
-#include <QTimerEvent>
 #include <QObject>
+#include <QDebug>
+#include <QTimer>
+#include <QTimerEvent>
 
-class MyTimer: public QObject
+
+class MyTimer : public QObject
 {
 
 public:
-    explicit MyTimer();
+    MyTimer(QObject* parent = NULL);
     ~MyTimer();
-protected:
-    virtual void timerEvent(QTimerEvent *event);
 
 public:
-    void timerStart();
+    void timer_open();
+    void timer_close();
 
 public slots:
-    void timerClose();
-
-private slots:
-    void timerUpdate();
-
+    void handleTimeout();  //超时处理函数
 private:
-    int id1,id2,id3;
-
+    QTimer *m_pTimer;
 };
+
 
 #endif // MY_TIMER_H

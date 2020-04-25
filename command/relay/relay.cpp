@@ -1,15 +1,6 @@
 #include "relay.h"
 
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <stdio.h>
-#include <QVariant>
-#include <unistd.h>
-
 static int fb;
 volatile int RELAY=0;
 
@@ -23,23 +14,29 @@ relay::~relay()
 
 void relay::relay_open()
 {
+    qDebug()<< ("try to open relay ...")<<endl;
     fb=open("/dev/relay_ctl",0);
 
     if(fb<0)
     {
-        perror("open device relay failed!");
+        //perror("open device relay failed!");
+        qDebug()<< ("open relay failed!")<<endl;
         exit(1);
     }
+    qDebug()<< ("open relay ok")<<endl;
+
+    RELAY = 1;
 
     ioctl(fb,1,1);
-    printf ("relay open ok");
 }
 
 
 void relay::relay_close()
 {
+    RELAY = 0;
+    qDebug()<< ("try to close relay")<<endl;
     ioctl(fb,0,0);
-    printf ("relay close ok");
     close(fb);
+    qDebug()<< ("relay close ok")<<endl;
 }
 

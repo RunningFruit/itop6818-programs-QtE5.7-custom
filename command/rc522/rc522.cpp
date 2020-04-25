@@ -1,29 +1,5 @@
 #include "rc522.h"
 
-#include <stdint.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/types.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <linux/fs.h>
-#include <errno.h>
-#include <string.h>
-#include <termio.h>
-
-
-#include <qtimer.h>
-
-#include <qstringlist.h>
-
-#include "spidev.h"
-#include "spidev_test.h"
-
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -47,7 +23,16 @@ static uint16_t delay;
 
 unsigned char UID[5], Temp[4];
 
+int rc522::rc522_init()
+{
+    int fd= 0;
 
+    fd = ::open(device, O_RDWR|O_NONBLOCK);
+    if (fd < 0)
+        return -1;
+    //reset
+    return fd;
+}
 
 int rc522::WriteRawRC(int addr, int data)
 {
@@ -62,7 +47,7 @@ int rc522::WriteRawRC(int addr, int data)
 
     ret = write(m_fd, TxBuf, 2);
     if (ret < 0)
-        printf("spi:SPI Write error\n");
+        qDebug()<<("spi:SPI Write error")<<endl;
 
     usleep(10);
 
@@ -81,13 +66,13 @@ unsigned char rc522::ReadRawRC(int addr)
 
     ret = write(m_fd, &Address, 1);
     if (ret < 0)
-        printf("spi:SPI Write error\n");
+        qDebug()<<("spi:SPI Write error")<<endl;
 
     usleep(100);
 
     ret = read(m_fd, &ReData, 1);
     if (ret < 0)
-        printf("spi:SPI Read error\n");
+        qDebug()<<("spi:SPI Read error")<<endl;
 
     return ReData;
 }
@@ -110,21 +95,6 @@ void rc522::ClearBitMask(unsigned char reg, unsigned char mask)
     WriteRawRC(reg, tmp);  // clear bit mask
 }
 
-int rc522::rc522_init()
-{
-    int fd= 0;
-
-    fd = ::open(device, O_RDWR|O_NONBLOCK);
-
-
-    if (fd < 0)
-        return -1;
-    //reset
-
-
-    return fd;
-}
-
 void rc522::PcdAntennaOn()
 {
     unsigned char i;
@@ -141,18 +111,18 @@ void rc522::PcdAntennaOn()
 
 //static void rc522::print_usage(const char *prog)
 //{
-//        printf("Usage: %s [-DsbdlHOLC3]\n", prog);
-//        puts("  -D --device   device to use (default /dev/spidev1.1)\n"
-//             "  -s --speed    max speed (Hz)\n"
-//             "  -d --delay    delay (usec)\n"
-//             "  -b --bpw      bits per word \n"
-//             "  -l --loop     loopback\n"
-//             "  -H --cpha     clock phase\n"
-//             "  -O --cpol     clock polarity\n"
-//             "  -L --lsb      least significant bit first\n"
-//             "  -C --cs-high  chip select active high\n"
-//             "  -3 --3wire    SI/SO signals shared\n");
-//        exit(1);
+//    qDebug()<<("Usage: ")<< prog << (" [-DsbdlHOLC3]" )<<endl;
+//    puts("  -D --device   device to use (default /dev/spidev1.1)\n"
+//         "  -s --speed    max speed (Hz)\n"
+//         "  -d --delay    delay (usec)\n"
+//         "  -b --bpw      bits per word \n"
+//         "  -l --loop     loopback\n"
+//         "  -H --cpha     clock phase\n"
+//         "  -O --cpol     clock polarity\n"
+//         "  -L --lsb      least significant bit first\n"
+//         "  -C --cs-high  chip select active high\n"
+//         "  -3 --3wire    SI/SO signals shared\n");
+//    exit(1);
 //}
 
 void rc522::parse_opts()
@@ -372,12 +342,23 @@ rc522::rc522(){
 
 rc522::~rc522()
 {
+    qDebug()<<("try to delete rc522 ...")<<endl;
     if (m_fd >= 0) {
         ::close(m_fd);
         m_fd = -1;
     }
+    qDebug()<<("rc522 deleted")<<endl;
 }
 
+void rc522::close()
+{
+    qDebug()<<("try to close rc522 ...")<<endl;
+    if (m_fd >= 0) {
+        ::close(m_fd);
+        m_fd = -1;
+    }
+    qDebug()<<("rc522 closed")<<endl;
+}
 
 void rc522::open(){
     char version = 0;
@@ -385,7 +366,7 @@ void rc522::open(){
 
     m_fd =rc522_init();
     if (m_fd < 0)
-        printf ("open success");
+        qDebug()<< ("open success");
 
     WriteRawRC(CommandReg, PCD_RESETPHASE);
     usleep(10);
@@ -396,23 +377,17 @@ void rc522::open(){
     WriteRawRC(TPrescalerReg, 0x3E);
 
     version = ReadRawRC(VersionReg);
-    printf("Chip Version: 0x%x\n", version);
+    //printf("Chip Version: 0x%x\n", version);
+    qDebug()<<("Chip Version: 0x")<<version<<endl;
     usleep(50000);
     PcdAntennaOn();
 
     m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
-    connect(m_notifier, SIGNAL(activated(int)), this, SLOT(on_id_Edit_read()));
+    connect(m_notifier, SIGNAL(activated(int)), this, SLOT(on_card_read()));
 }
 
-void rc522::close()
-{
-    if (m_fd >= 0) {
-        ::close(m_fd);
-        m_fd = -1;
-    }
-}
 
-void rc522::on_id_Edit_read()
+void rc522::on_card_read()
 {
     int j;
     char c[50];
@@ -435,21 +410,17 @@ void rc522::on_id_Edit_read()
         if(PcdAnticoll(UID) == MI_OK)
         {
             sprintf(c,"%s:%x%x%x%x",type_rfid[j],UID[0],UID[1],UID[2],UID[3]);
-
-            printf("%s\n",c);
-
+            qDebug()<<(c)<<endl;
             PcdRequest(0x52,Temp);//clear
-
         }
         else
         {
             sprintf(c,"%s,but no serial num read",type_rfid[j]);
-
-            printf("%s\n",c);
+            qDebug()<<(c)<<endl;
         }
     }
     else
     {
-        printf("No Card!");
+        qDebug()<<("No Card!")<<endl;
     }
 }
